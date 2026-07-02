@@ -1,30 +1,57 @@
+<div class="kst-hero" markdown>
+
+<img src="assets/images/kestrel-bird.png" alt="Kestrel" class="kst-hero__bird">
+
 # Kestrel
 
-**Memory-safe. Taint-aware. Effect-typed.**
+<p class="kst-tagline">Memory-safe. Taint-aware. Effect-typed.</p>
 
-Kestrel is a systems programming language that makes security properties part of the type system — not an afterthought. It combines C-style familiarity with Rust-level safety guarantees, and adds security dimensions that no other systems language has built in.
+</div>
 
-## Why Kestrel?
+Kestrel is a systems programming language that makes security properties part of the type system -- not an afterthought. It combines C-style familiarity with Rust-level safety guarantees, and adds security dimensions that no other systems language has built in.
 
-Most security bugs fall into a few known categories: buffer overflows, use-after-free, SQL injection, timing side-channels. Kestrel's type system catches all of these at compile time, without runtime overhead.
+<div class="kst-features" markdown>
 
-- **Memory safety** — no dangling pointers, no use-after-free, automatic deallocation
-- **Taint tracking** — user input is tainted at the source; the compiler refuses to let it reach a sink without sanitization
-- **Effect types** — functions declare what they do (`@io`, `@network`, `@pure`); untrusted code cannot sneak in side effects
-- **Constant-time types** — `secret[T]` values cannot leak through timing
+<div class="kst-feature" markdown>
 
-## Install
+### Memory Safety
 
-```bash
-curl -fsSL https://kestrel-build.github.io/install.sh | sh
-```
+No dangling pointers, no use-after-free, automatic deallocation. NOVA manages heap memory at compile time with zero runtime overhead.
+
+</div>
+
+<div class="kst-feature" markdown>
+
+### Taint Tracking
+
+User input is tainted at the source. The compiler refuses to let it reach a database query or shell command without sanitization.
+
+</div>
+
+<div class="kst-feature" markdown>
+
+### Effect Types
+
+Functions declare what they do: I/O, network, pure. A math library cannot sneak in a network call. The compiler enforces it.
+
+</div>
+
+<div class="kst-feature" markdown>
+
+### Constant-Time Types
+
+`secret[T]` values cannot leak through timing side-channels. The compiler rejects branches on secret values.
+
+</div>
+
+</div>
 
 ## Hello, Kestrel
 
 ```kestrel
 func main() -> int32 {
     str name = "world"
-    printf("Hello, {name}!\n")
+    printf("Hello, %s!\n", name)
     return 0
 }
 ```
@@ -41,6 +68,16 @@ func main() -> int32 {
 // Sanitize first, then use
 str safe = sanitize(input)
 db.query("SELECT * FROM users WHERE name = '{safe}'")
+```
+
+## Install
+
+Download pre-built binaries from the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases) page, or build from source:
+
+```bash
+git clone https://github.com/kestrel-build/kestrel
+cd kestrel
+cargo build --release
 ```
 
 ## Get started

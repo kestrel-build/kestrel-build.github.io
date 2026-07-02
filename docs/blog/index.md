@@ -1,3 +1,3 @@
 # Blog
 
-Updates on Kestrel language development.
+Development updates and release notes for the Kestrel programming language.

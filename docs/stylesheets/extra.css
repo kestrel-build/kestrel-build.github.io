@@ -1,36 +1,271 @@
+/* ============================================
+   Kestrel Documentation — Custom Theme
+   Kestrel bird palette: slate, sage, gold, rust
+   #202C39  #283845  #B8B08D  #F2D492  #F29559
+   ============================================ */
+
 :root {
-  --md-primary-fg-color: #1a1a1a;
-  --md-primary-fg-color--light: #333333;
-  --md-primary-fg-color--dark: #000000;
-  --md-accent-fg-color: #76ff03;
+  --kst-slate: #202C39;
+  --kst-slate-light: #283845;
+  --kst-sage: #B8B08D;
+  --kst-gold: #F2D492;
+  --kst-rust: #F29559;
+  --kst-rust-dim: #d9854f;
+  --kst-glow: rgba(242, 212, 146, 0.08);
+  --kst-border: #3a4a5a;
+  --md-primary-fg-color: var(--kst-slate);
+  --md-primary-fg-color--light: var(--kst-slate-light);
+  --md-primary-fg-color--dark: #1a2430;
+  --md-accent-fg-color: var(--kst-rust);
 }
 
+/* ---------- Dark scheme ---------- */
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color: #121212;
-  --md-default-fg-color--light: #b0b0b0;
-  --md-accent-fg-color: #76ff03;
+  --md-default-bg-color: #1a2430;
+  --md-default-fg-color: #e8e4db;
+  --md-default-fg-color--light: var(--kst-sage);
+  --md-accent-fg-color: var(--kst-rust);
+  --md-code-bg-color: var(--kst-slate);
+  --md-typeset-a-color: var(--kst-gold);
+  --kst-border: #3a4a5a;
 }
 
+/* ---------- Light scheme ---------- */
+[data-md-color-scheme="default"] {
+  --md-accent-fg-color: #c06d30;
+  --md-typeset-a-color: #c06d30;
+  --md-code-bg-color: #f5f2eb;
+  --kst-border: #d5d0c4;
+}
+
+/* ---------- Header & tabs ---------- */
 .md-header {
-  background-color: #000000;
+  background-color: var(--kst-slate);
+  border-bottom: 1px solid var(--kst-slate-light);
 }
 
 .md-tabs {
-  background-color: #1a1a1a;
+  background-color: #1a2430;
+  border-bottom: 1px solid var(--kst-slate-light);
 }
 
-a {
-  color: var(--md-accent-fg-color);
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  color: var(--kst-gold);
+}
+
+/* ---------- Links ---------- */
+.md-typeset a {
+  color: var(--md-typeset-a-color);
+  text-decoration: none;
+  transition: color 0.15s ease;
 }
 
 .md-typeset a:hover {
-  color: #b2ff59;
+  color: var(--kst-rust);
+  text-decoration: underline;
 }
 
-code {
-  border: 1px solid #333;
+/* ---------- Navigation ---------- */
+.md-nav__link--active {
+  color: var(--kst-rust) !important;
+  font-weight: 600;
+}
+
+/* ---------- Code blocks ---------- */
+.md-typeset code {
+  border: 1px solid var(--kst-border);
+  border-radius: 4px;
+  font-size: 0.82em;
+  padding: 0.15em 0.4em;
+}
+
+.md-typeset pre {
+  border: 1px solid var(--kst-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.md-typeset pre > code {
+  border: none;
+  border-radius: 0;
+  font-size: 0.85em;
+  padding: 0;
 }
 
 [data-md-color-scheme="slate"] .md-typeset code {
-  background-color: #1e1e1e;
+  background-color: var(--kst-slate);
+}
+
+[data-md-color-scheme="slate"] .md-typeset pre {
+  background-color: var(--kst-slate);
+}
+
+/* ---------- Admonitions ---------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 6px;
+  border-left-width: 4px;
+}
+
+/* ---------- Tables ---------- */
+.md-typeset table:not([class]) {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--kst-border);
+}
+
+.md-typeset table:not([class]) th {
+  background-color: rgba(242, 149, 89, 0.1);
+  font-weight: 600;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background-color: rgba(242, 149, 89, 0.08);
+}
+
+/* ---------- Home page hero ---------- */
+.kst-hero {
+  text-align: center;
+  padding: 2rem 0 1rem;
+}
+
+.kst-hero__bird {
+  width: 160px;
+  height: auto;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 4px 24px rgba(242, 149, 89, 0.3));
+}
+
+.kst-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+  color: var(--kst-gold);
+}
+
+.kst-hero .kst-tagline {
+  font-size: 1.15rem;
+  color: var(--kst-sage);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.kst-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin: 2rem 0;
+}
+
+.kst-feature {
+  padding: 1.2rem;
+  border: 1px solid var(--kst-border);
+  border-radius: 8px;
+  background: var(--kst-glow);
+  transition: border-color 0.2s ease;
+}
+
+.kst-feature:hover {
+  border-color: var(--kst-rust);
+}
+
+.kst-feature h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: var(--kst-rust);
+}
+
+.kst-feature p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* ---------- Footer ---------- */
+.md-footer {
+  border-top: 1px solid var(--kst-border);
+}
+
+/* ---------- Search ---------- */
+.md-search__input {
+  border-radius: 6px;
+}
+
+/* ---------- Scrollbar (dark mode) ---------- */
+[data-md-color-scheme="slate"] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-track {
+  background: #1a2430;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-thumb {
+  background: var(--kst-slate-light);
+  border-radius: 4px;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-thumb:hover {
+  background: #3a4a5a;
+}
+
+/* ---------- Inline TOC (top of page) ---------- */
+.md-sidebar--secondary,
+.md-sidebar[data-md-type="toc"] {
+  display: none !important;
+}
+
+.kst-toc {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--kst-border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  background: var(--kst-glow);
+}
+
+.kst-toc__title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--kst-rust);
+  margin: 0 0 0.5rem 0;
+}
+
+.kst-toc__list {
+  margin: 0;
+  padding: 0 0 0 1.2rem;
+}
+
+.kst-toc__list li {
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.kst-toc__list ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.kst-toc__list a {
+  color: var(--kst-sage);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.kst-toc__list a:hover {
+  color: var(--kst-gold);
+}
+
+/* ---------- Responsive ---------- */
+@media screen and (max-width: 768px) {
+  .kst-hero h1 {
+    font-size: 2rem;
+  }
+
+  .kst-features {
+    grid-template-columns: 1fr;
+  }
 }

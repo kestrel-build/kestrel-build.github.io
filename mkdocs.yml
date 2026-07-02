@@ -4,6 +4,7 @@ site_description: A memory-safe, taint-aware systems programming language
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - scheme: slate
       primary: black
@@ -28,6 +29,8 @@ theme:
     - search.highlight
     - content.code.copy
     - content.code.annotate
+  logo: assets/images/logo-192.png
+  favicon: assets/images/favicon.ico
   icon:
     repo: fontawesome/brands/github
   font:

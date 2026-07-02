@@ -2,13 +2,18 @@
 
 ## Installation
 
-### Linux and macOS
+### Download from GitHub Releases
+
+Pre-built binaries for Linux and macOS are available on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases) page.
+
+Download the archive for your platform, extract it, and place the `kestrel` binary somewhere on your PATH:
 
 ```bash
-curl -fsSL https://kestrel-build.github.io/install.sh | sh
+tar xzf kestrel-v1.0.0-alpha.1-linux-x86_64.tar.gz
+mv kestrel ~/.local/bin/
 ```
 
-This installs the `kestrel` binary to `~/.local/bin/`. Add that to your PATH if it isn't already:
+Make sure `~/.local/bin` is in your PATH:
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"

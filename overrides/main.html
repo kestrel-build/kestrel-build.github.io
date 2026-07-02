@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% set toc_items = page.toc | list %}
+  {% set sections = [] %}
+  {% for item in toc_items %}
+    {% if item.children %}
+      {% for child in item.children %}
+        {% if sections.append(child) %}{% endif %}
+      {% endfor %}
+    {% else %}
+      {% if sections.append(item) %}{% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if sections | length > 1 %}
+  <nav class="kst-toc">
+    <h3 class="kst-toc__title">Table of Contents</h3>
+    <ul class="kst-toc__list">
+      {% for section in sections %}
+      <li><a href="{{ section.url }}">{{ section.title }}</a>
+        {% if section.children %}
+        <ul>
+          {% for child in section.children %}
+          <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+  {{ super() }}
+{% endblock %}
