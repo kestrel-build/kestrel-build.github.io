@@ -1,0 +1,88 @@
+site_name: Kestrel Programming Language
+site_url: https://kestrel-build.github.io
+site_description: A memory-safe, taint-aware systems programming language
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+repo_url: https://github.com/kestrel-build/kestrel
+repo_name: kestrel-build/kestrel
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started.md
+    - Hello World: hello-world.md
+  - Language Guide:
+    - Overview: language-guide/overview.md
+    - Variables & Types: language-guide/variables-types.md
+    - Functions: language-guide/functions.md
+    - Control Flow: language-guide/control-flow.md
+    - Structs & Classes: language-guide/structs-classes.md
+    - Memory Safety: language-guide/memory-safety.md
+    - Error Handling: language-guide/error-handling.md
+    - Modules: language-guide/modules.md
+  - Security:
+    - Overview: security/overview.md
+    - Taint Tracking: security/taint-tracking.md
+    - Effect System: security/effect-system.md
+  - Reference:
+    - Type System: reference/type-system.md
+    - Standard Library: reference/stdlib.md
+  - Blog:
+    - blog/index.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kestrel-build
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - blog
