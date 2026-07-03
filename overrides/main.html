@@ -12,7 +12,7 @@
       {% if sections.append(item) %}{% endif %}
     {% endif %}
   {% endfor %}
-  {% if sections | length > 1 %}
+  {% if sections | length > 1 and not page.is_homepage %}
   <nav class="kst-toc">
     <h3 class="kst-toc__title">Table of Contents</h3>
     <ul class="kst-toc__list">
