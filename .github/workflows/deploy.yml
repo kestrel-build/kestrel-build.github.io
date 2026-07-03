@@ -1,39 +1,59 @@
 name: Deploy docs
 
+# Versioned docs with mike. A rolling `latest` alias always serves the current
+# docs; each compiler release also freezes a versioned snapshot (v1.0.0-…), so
+# users can read the docs that match the release they installed. The Material
+# theme shows a version dropdown (extra.version.provider: mike).
+#
+# ONE-TIME SETUP: after the first run, set the repository's Pages source to the
+# `gh-pages` branch (root) — mike publishes there. (Settings → Pages → Deploy
+# from a branch → gh-pages / (root).)
+
 on:
   push:
     branches: [main]
+  # A compiler release can POST a repository_dispatch to snapshot that version.
+  repository_dispatch:
+    types: [release]
+  # Manual snapshot of a specific version.
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to snapshot (e.g. v1.0.0-alpha.3); blank = update latest only"
+        required: false
+        default: ""
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write   # mike commits/pushes to the gh-pages branch
 
 concurrency:
-  group: "pages"
+  group: docs-deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # mike needs full history of gh-pages
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install mkdocs-material
-      - run: mkdocs build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - run: pip install -r requirements.txt
+      - name: Configure git identity for mike
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Deploy
+        run: |
+          set -eu
+          VERSION="${{ github.event.inputs.version || github.event.client_payload.version }}"
+          if [ -n "$VERSION" ]; then
+            # Release snapshot: freeze this version and repoint `latest` to it.
+            mike deploy --push --update-aliases "$VERSION" latest
+          else
+            # Ordinary docs change: refresh the rolling `latest`.
+            mike deploy --push --update-aliases latest
+          fi
+          mike set-default --push latest
