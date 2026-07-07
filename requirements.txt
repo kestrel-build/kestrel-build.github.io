@@ -1,1 +1,5 @@
-mkdocs-material
+# Pinned so CI builds are reproducible — an unpinned mkdocs-material meant a
+# breaking upstream release could fail the deploy at random. Allow 9.7.x patch
+# updates, but not a major (10.x) bump. Bundles the search + blog plugins used
+# in mkdocs.yml, so no extra packages are needed.
+mkdocs-material>=9.7,<10
