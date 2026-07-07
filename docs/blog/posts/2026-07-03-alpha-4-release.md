@@ -33,7 +33,7 @@ mystery.
 ## A one-line install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel-public/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
 ```
 
 The installer detects your platform, downloads the right binary, and

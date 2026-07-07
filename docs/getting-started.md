@@ -7,13 +7,13 @@
 This downloads and installs the **latest** release for your platform:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel-public/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
 ```
 
 To install a specific version instead of the latest, set `KESTREL_VERSION`:
 
 ```bash
-KESTREL_VERSION=v1.0.0-alpha.6 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel-public/main/install.sh | sh
+KESTREL_VERSION=v1.0.0-alpha.6 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
 ```
 
 ### Manual download
