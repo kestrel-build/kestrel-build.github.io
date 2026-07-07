@@ -3,6 +3,11 @@
 A single-page reference for the Kestrel language and CLI. For deeper explanations
 see the [Language Guide](../language-guide/overview.md).
 
+[:material-file-download: **Download the printable PDF cheatsheet**](../assets/kestrel-cheatsheet.pdf){ .md-button .md-button--primary }
+&nbsp; [View the printable HTML](../assets/kestrel-cheatsheet.html){ .md-button }
+
+A color-coded, multi-column layout that prints cleanly to two Letter/A4 pages.
+
 ---
 
 ## CLI commands

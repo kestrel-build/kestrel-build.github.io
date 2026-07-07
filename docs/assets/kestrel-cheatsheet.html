@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Language Cheatsheet</title>
+<style>
+/* =====================================================================
+   Kestrel Language Cheatsheet — printable, self-contained.
+   Brand palette: slate #202C39 · slate-light #283845 · sage #B8B08D
+                  gold #F2D492 · rust #F29559
+   No external fonts / CDN / remote images. CSP-safe.
+   ===================================================================== */
+
+:root{
+  --slate:#202C39;
+  --slate-2:#283845;
+  --sage:#B8B08D;
+  --gold:#F2D492;
+  --rust:#F29559;
+  --rust-ink:#b8531d;
+
+  --paper:#fbf9f3;
+  --card:#ffffff;
+  --ink:#26313d;
+  --ink-soft:#5b6672;
+  --line:#e4ded0;
+  --line-soft:#efe9dc;
+
+  /* syntax colors tuned for light paper + print contrast */
+  --c-kw:#b8531d;      /* keywords          */
+  --c-ty:#1f6a78;      /* types             */
+  --c-str:#5f7a2e;     /* strings           */
+  --c-cm:#9aa0a8;      /* comments          */
+  --c-num:#a8641a;     /* numbers           */
+  --c-fn:#7a5aa6;      /* function names    */
+  --c-punc:#48535f;    /* punctuation       */
+}
+
+*{box-sizing:border-box}
+
+html,body{margin:0;padding:0}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+  font-size:13px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+
+.sheet{
+  max-width:1180px;
+  margin:0 auto;
+  padding:22px 26px 40px;
+}
+
+/* ---------------- Masthead ---------------- */
+.masthead{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 20px;
+  border-radius:12px;
+  background:
+    radial-gradient(120% 180% at 88% -40%, rgba(242,149,89,.30), transparent 60%),
+    linear-gradient(120deg,var(--slate),var(--slate-2));
+  color:#f3efe4;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+}
+.masthead__logo{flex:0 0 auto;width:52px;height:52px}
+.masthead__text{flex:1 1 auto;min-width:0}
+.masthead h1{
+  margin:0;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.02em;
+  color:var(--gold);
+  line-height:1.05;
+}
+.masthead h1 .tld{color:var(--rust);font-weight:800}
+.masthead p{
+  margin:3px 0 0;
+  font-size:12px;
+  color:var(--sage);
+  letter-spacing:.01em;
+}
+.masthead__meta{
+  flex:0 0 auto;
+  text-align:right;
+  font-size:10.5px;
+  line-height:1.5;
+  color:var(--sage);
+  font-variant-numeric:tabular-nums;
+}
+.masthead__meta b{color:var(--gold);font-weight:700}
+
+/* ---------------- Column flow ---------------- */
+.cols{
+  column-count:3;
+  column-gap:16px;
+}
+
+/* ---------------- Card ---------------- */
+.card{
+  break-inside:avoid;
+  -webkit-column-break-inside:avoid;
+  page-break-inside:avoid;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:9px;
+  margin:0 0 14px;
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(32,44,57,.05);
+}
+.card__hd{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 11px;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#fff;
+  background:var(--slate);
+}
+.card__hd .num{
+  font-size:10px;
+  font-weight:700;
+  opacity:.8;
+  font-variant-numeric:tabular-nums;
+}
+/* rotating accent stripe per section family */
+.card--rust .card__hd{background:linear-gradient(90deg,var(--rust),var(--rust-ink))}
+.card--gold .card__hd{background:linear-gradient(90deg,#d9a53f,#c58a26);color:#2a2213}
+.card--sage .card__hd{background:linear-gradient(90deg,#8f8a68,#767149)}
+.card--slate .card__hd{background:linear-gradient(90deg,var(--slate),var(--slate-2))}
+.card--teal .card__hd{background:linear-gradient(90deg,#1f6a78,#164e59)}
+
+.card__bd{padding:9px 11px 10px}
+.card__bd > *:first-child{margin-top:0}
+.card__bd > *:last-child{margin-bottom:0}
+
+/* ---------------- Notes ---------------- */
+.note{
+  font-size:11px;
+  color:var(--ink-soft);
+  margin:7px 0 0;
+  line-height:1.4;
+}
+.note code{
+  background:var(--line-soft);
+  border-radius:3px;
+  padding:.5px 3px;
+  font-family:inherit;
+}
+.note code, code.k{
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  font-size:10.5px;
+  color:var(--c-kw);
+}
+
+/* ---------------- Tables ---------------- */
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+th,td{
+  text-align:left;
+  padding:3px 6px;
+  border-bottom:1px solid var(--line-soft);
+  vertical-align:top;
+}
+thead th{
+  font-size:9.5px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-soft);
+  border-bottom:1.5px solid var(--line);
+  font-weight:700;
+}
+tbody tr:last-child td{border-bottom:none}
+td.mono,th.mono{
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  font-size:10.5px;
+  color:var(--c-kw);
+  white-space:nowrap;
+}
+td.mono .ty{color:var(--c-ty)}
+
+/* ---------------- Code blocks ---------------- */
+pre{
+  margin:6px 0 0;
+  padding:8px 10px;
+  background:#f6f3ea;
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  border-radius:6px;
+  overflow-x:auto;
+  font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  font-size:10.5px;
+  line-height:1.55;
+  color:var(--ink);
+  white-space:pre;
+  tab-size:2;
+}
+pre .kw{color:var(--c-kw);font-weight:600}
+pre .ty{color:var(--c-ty)}
+pre .str{color:var(--c-str)}
+pre .cm{color:var(--c-cm);font-style:italic}
+pre .num{color:var(--c-num)}
+pre .fn{color:var(--c-fn)}
+pre .p{color:var(--c-punc)}
+pre .an{color:var(--rust-ink)}   /* annotations */
+
+/* keyword chips row for concurrency etc. */
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 0}
+.chip{
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:10px;
+  color:var(--c-kw);
+  background:var(--line-soft);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:1px 5px;
+}
+
+/* ---------------- Footer ---------------- */
+.foot{
+  margin-top:6px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+  font-size:10.5px;
+  color:var(--ink-soft);
+}
+.foot b{color:var(--rust-ink)}
+
+/* ===================================================================
+   PRINT
+   =================================================================== */
+@page{
+  size:Letter;
+  margin:12mm 11mm 12mm;
+}
+@media print{
+  body{background:#fff;font-size:9.2px}
+  .sheet{max-width:none;margin:0;padding:0}
+  .cols{column-count:3;column-gap:9px}
+  .card{
+    margin:0 0 8px;
+    box-shadow:none;
+    border-color:#d9d3c5;
+    border-radius:6px;
+  }
+  .card__hd{font-size:8.4px;padding:3.5px 7px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card__bd{padding:5px 7px 6px}
+  .masthead{-webkit-print-color-adjust:exact;print-color-adjust:exact;margin-bottom:9px;padding:10px 14px;border-radius:8px}
+  .masthead h1{font-size:19px}
+  .masthead__logo{width:40px;height:40px}
+  pre{font-size:7.6px;padding:5px 7px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  table{font-size:7.8px}
+  th,td{padding:1.6px 4px}
+  td.mono,th.mono,.note code,code.k{font-size:7.6px}
+  .note{font-size:7.8px}
+  .chip{font-size:7.4px}
+  .foot{font-size:7.6px}
+  a{color:inherit;text-decoration:none}
+}
+
+/* narrow screens */
+@media screen and (max-width:900px){ .cols{column-count:2} }
+@media screen and (max-width:600px){ .cols{column-count:1} .masthead{flex-wrap:wrap} }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <svg class="masthead__logo" viewBox="0 0 64 64" role="img" aria-label="Kestrel">
+      <defs>
+        <linearGradient id="kg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F2D492"/>
+          <stop offset="1" stop-color="#F29559"/>
+        </linearGradient>
+      </defs>
+      <!-- stylized kestrel in flight -->
+      <path fill="url(#kg)" d="M6 34c9-2 15-6 20-13 2-3 5-6 9-6 3 0 5 2 5 5 0 2-1 4-3 5 4 0 8 1 12 4-4 1-7 3-9 6 3 1 6 3 8 7-6-2-11-2-16 0 2 3 3 6 3 10-4-3-7-7-9-11-3 4-8 7-14 8 3-3 5-6 6-10-5 2-10 2-15-1 3-1 5-2 7-4-4 0-7-2-9-5z"/>
+      <circle cx="41" cy="19" r="1.7" fill="#202C39"/>
+    </svg>
+    <div class="masthead__text">
+      <h1>Kestrel<span class="tld"> · Cheatsheet</span></h1>
+      <p>Memory-safe, taint-aware systems language — brace syntax, LLVM backend.</p>
+    </div>
+    <div class="masthead__meta">
+      <div>v1.0.0 &nbsp;·&nbsp; <b>quick reference</b></div>
+      <div>kestrel-build.github.io</div>
+    </div>
+  </header>
+
+  <!-- ============ COLUMNS ============ -->
+  <div class="cols">
+
+    <!-- 01 CLI commands -->
+    <section class="card card--rust">
+      <div class="card__hd"><span class="num">01</span> CLI Commands</div>
+      <div class="card__bd">
+        <table>
+          <tbody>
+            <tr><td class="mono">kestrel build &lt;f&gt;</td><td>Compile <code class="k">.kst</code> to a native binary</td></tr>
+            <tr><td class="mono">kestrel run &lt;f&gt;</td><td>Compile and run in one step</td></tr>
+            <tr><td class="mono">kestrel check &lt;f&gt;</td><td>Type-check only, no binary</td></tr>
+            <tr><td class="mono">kestrel new &lt;n&gt;</td><td>Scaffold a new project</td></tr>
+            <tr><td class="mono">kestrel emit-ir &lt;f&gt;</td><td>Print Kestrel IR (debug)</td></tr>
+            <tr><td class="mono">kestrel emit-llvm &lt;f&gt;</td><td>Emit LLVM IR (<code class="k">.ll</code>)</td></tr>
+            <tr><td class="mono">kestrel clean</td><td>Remove build artifacts</td></tr>
+            <tr><td class="mono">kestrel version</td><td>Print version</td></tr>
+            <tr><td class="mono">kestrel help</td><td>Print help</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 02 CLI options -->
+    <section class="card card--rust">
+      <div class="card__hd"><span class="num">02</span> CLI Options</div>
+      <div class="card__bd">
+        <table>
+          <tbody>
+            <tr><td class="mono">-o &lt;out&gt;</td><td>Output binary path</td></tr>
+            <tr><td class="mono">--release</td><td>Build with optimizations</td></tr>
+            <tr><td class="mono">--verbose</td><td>Print timing information</td></tr>
+            <tr><td class="mono">--version</td><td>Print version</td></tr>
+            <tr><td class="mono">--help</td><td>Print help</td></tr>
+          </tbody>
+        </table>
+<pre><span class="fn">kestrel</span> run hello.kst
+<span class="fn">kestrel</span> build <span class="kw">-o</span> myapp <span class="kw">--release</span> main.kst</pre>
+      </div>
+    </section>
+
+    <!-- 03 Types -->
+    <section class="card card--gold">
+      <div class="card__hd"><span class="num">03</span> Types</div>
+      <div class="card__bd">
+        <table>
+          <tbody>
+            <tr><td class="mono">int32 int64</td><td>Signed integers (fixed width)</td></tr>
+            <tr><td class="mono">uint32 uint64</td><td>Unsigned integers</td></tr>
+            <tr><td class="mono">float32 float64</td><td>IEEE 754 floats</td></tr>
+            <tr><td class="mono">bool</td><td><code class="k">true</code> / <code class="k">false</code></td></tr>
+            <tr><td class="mono">str</td><td>UTF-8 string (owned)</td></tr>
+            <tr><td class="mono">T[N]</td><td>Fixed-size array</td></tr>
+            <tr><td class="mono">T[]</td><td>Slice (borrowed view)</td></tr>
+            <tr><td class="mono">List[T]</td><td>Growable list</td></tr>
+            <tr><td class="mono">HashMap[str,V]</td><td>String-keyed hash map</td></tr>
+            <tr><td class="mono">T?</td><td>Nullable</td></tr>
+            <tr><td class="mono">ptr[T]</td><td>Raw pointer (<code class="k">unsafe</code>)</td></tr>
+          </tbody>
+        </table>
+<pre><span class="ty">int32</span> x = <span class="num">42</span>
+<span class="ty">float64</span> pi = <span class="num">3.14159</span>
+<span class="ty">str</span> name = <span class="str">"Kestrel"</span>
+<span class="ty">bool</span> active = <span class="kw">true</span>
+<span class="ty">int32</span> flags = <span class="fn">zeroed</span>()  <span class="cm">// zero-init</span>
+<span class="kw">auto</span> n = <span class="num">42</span>          <span class="cm">// inferred</span>
+<span class="kw">const</span> <span class="ty">int32</span> MAX = <span class="num">100</span></pre>
+        <p class="note"><b>Mutable by default</b> — use <code>const</code> for immutability. No <code>let</code> / <code>mut</code>.</p>
+      </div>
+    </section>
+
+    <!-- 04 Functions -->
+    <section class="card card--teal">
+      <div class="card__hd"><span class="num">04</span> Functions</div>
+      <div class="card__bd">
+<pre><span class="kw">func</span> <span class="fn">add</span>(<span class="ty">int32</span> a, <span class="ty">int32</span> b) <span class="p">-&gt;</span> <span class="ty">int32</span> {
+    <span class="kw">return</span> a + b
+}
+
+<span class="cm">// -&gt; void is required</span>
+<span class="kw">func</span> <span class="fn">greet</span>(<span class="ty">str</span> name) <span class="p">-&gt;</span> <span class="kw">void</span> {
+    <span class="fn">println</span>(<span class="str">"Hello, {name}!"</span>)
+}
+
+<span class="cm">// generics use [T], not &lt;T&gt;</span>
+<span class="kw">func</span> <span class="fn">identity</span>[<span class="ty">T</span>](<span class="ty">T</span> val) <span class="p">-&gt;</span> <span class="ty">T</span> {
+    <span class="kw">return</span> val
+}</pre>
+        <p class="note">Interpolation: <code>"total = {a + b}"</code>. Booleans interpolate as <code>true</code>/<code>false</code>.</p>
+      </div>
+    </section>
+
+    <!-- 05 Operators -->
+    <section class="card card--slate">
+      <div class="card__hd"><span class="num">05</span> Operators</div>
+      <div class="card__bd">
+        <table>
+          <tbody>
+            <tr><td>Arithmetic</td><td class="mono">+ - * / %</td></tr>
+            <tr><td>Comparison</td><td class="mono">== != &lt; &lt;= &gt; &gt;=</td></tr>
+            <tr><td>Logical</td><td class="mono">&amp;&amp; || !</td></tr>
+            <tr><td>Bitwise</td><td class="mono">&amp; | ^ ~ &lt;&lt; &gt;&gt;</td></tr>
+            <tr><td>Assign</td><td class="mono">= += -= *= /= %=</td></tr>
+            <tr><td></td><td class="mono">&amp;= |= ^= &lt;&lt;= &gt;&gt;=</td></tr>
+            <tr><td>Nullable</td><td class="mono">?. &nbsp; ??</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Logical is <code>&amp;&amp;</code> <code>||</code> <code>!</code> only — no <code>and</code>/<code>or</code>/<code>not</code>. <code>?.</code> safe call · <code>??</code> default.</p>
+      </div>
+    </section>
+
+    <!-- 06 Control flow -->
+    <section class="card card--teal">
+      <div class="card__hd"><span class="num">06</span> Control Flow</div>
+      <div class="card__bd">
+<pre><span class="kw">if</span> (x &gt; <span class="num">0</span>) {
+    <span class="cm">// ...</span>
+} <span class="kw">else if</span> (x == <span class="num">0</span>) {
+} <span class="kw">else</span> {
+}
+
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="num">0</span>..<span class="num">10</span>) { }   <span class="cm">// inclusive</span>
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="num">0</span>..&lt;<span class="num">10</span>) { }  <span class="cm">// exclusive</span>
+<span class="kw">for</span> (item <span class="kw">in</span> list) { }
+<span class="kw">for</span> (i, item <span class="kw">in</span> list) { }
+
+<span class="kw">while</span> (cond) { }
+
+<span class="kw">match</span> (color) {
+    <span class="kw">case</span> <span class="ty">Color</span>.Red: <span class="fn">handle_red</span>()
+    <span class="kw">case</span> <span class="ty">Color</span>.Blue: <span class="fn">handle_blue</span>()
+    <span class="kw">case</span> _: <span class="fn">handle_other</span>()
+}</pre>
+        <p class="note">One <code>for</code> loop — no <code>foreach</code>. Parens + braces required. Newline ends a statement (no semicolons).</p>
+      </div>
+    </section>
+
+    <!-- 07 Collections -->
+    <section class="card card--gold">
+      <div class="card__hd"><span class="num">07</span> Collections</div>
+      <div class="card__bd">
+<pre><span class="cm">// List[T]</span>
+<span class="ty">List</span>[<span class="ty">int32</span>] xs = <span class="fn">list_new</span>()
+xs.<span class="fn">push</span>(<span class="num">10</span>)
+<span class="ty">int32</span> v = xs.<span class="fn">get</span>(<span class="num">0</span>)    <span class="cm">// checked</span>
+<span class="ty">int32</span> f = xs.<span class="fn">first</span>()
+<span class="ty">int32</span> l = xs.<span class="fn">last</span>()
+<span class="ty">int32</span> t = xs.<span class="fn">pop</span>()      <span class="cm">// rm+ret last</span>
+xs.<span class="fn">sort</span>()               <span class="cm">// ascending</span>
+xs.<span class="fn">reverse</span>()
+<span class="ty">bool</span> h = xs.<span class="fn">contains</span>(<span class="num">10</span>)
+<span class="ty">int64</span> at = xs.<span class="fn">index_of</span>(<span class="num">10</span>) <span class="cm">// or -1</span>
+<span class="ty">bool</span> e = xs.<span class="fn">is_empty</span>()
+<span class="ty">int64</span> n = xs.<span class="fn">len</span>()
+xs.<span class="fn">clear</span>()              <span class="cm">// keep cap</span>
+
+<span class="cm">// HashMap[str, V]</span>
+<span class="ty">HashMap</span>[<span class="ty">str</span>,<span class="ty">int32</span>] ages = <span class="fn">map_new</span>()
+ages.<span class="fn">insert</span>(<span class="str">"ada"</span>, <span class="num">36</span>)
+<span class="ty">int32</span> a = ages.<span class="fn">get</span>(<span class="str">"ada"</span>)
+<span class="ty">bool</span> k = ages.<span class="fn">contains</span>(<span class="str">"ada"</span>)</pre>
+        <p class="note">Indexing is bounds-checked and aborts on out-of-range — no negative indexing; use <code>first()</code> / <code>last()</code>.</p>
+      </div>
+    </section>
+
+    <!-- 08 Structs / classes / enums -->
+    <section class="card card--rust">
+      <div class="card__hd"><span class="num">08</span> Structs · Classes · Enums</div>
+      <div class="card__bd">
+<pre><span class="cm">// private by default; pub/protected</span>
+<span class="kw">struct</span> <span class="ty">Point</span> {
+    <span class="ty">float64</span> x
+    <span class="ty">float64</span> y
+    <span class="kw">pub func</span> <span class="fn">norm</span>() <span class="p">-&gt;</span> <span class="ty">float64</span> {
+        <span class="kw">return</span> this.x*this.x + this.y*this.y
+    }
+}
+
+<span class="cm">// inheritance; `parent`, not `base`</span>
+<span class="kw">class</span> <span class="ty">Dog</span> : <span class="ty">Animal</span> {
+    <span class="kw">override func</span> <span class="fn">speak</span>() <span class="p">-&gt;</span> <span class="kw">void</span> {
+        <span class="kw">parent</span>.<span class="fn">speak</span>()
+        <span class="fn">println</span>(<span class="str">"Woof!"</span>)
+    }
+}
+
+<span class="cm">// backing type required</span>
+<span class="kw">enum</span> <span class="ty">Color</span> : <span class="ty">int32</span> {
+    Red = <span class="num">0</span>
+    Green = <span class="num">1</span>
+    Blue = <span class="num">2</span>
+}
+<span class="ty">Point</span> p = <span class="ty">Point</span> { x: <span class="num">1.0</span>, y: <span class="num">2.0</span> }</pre>
+        <p class="note"><code>clone()</code> is a deep copy — modifying a clone never touches the original.</p>
+      </div>
+    </section>
+
+    <!-- 09 Error handling -->
+    <section class="card card--slate">
+      <div class="card__hd"><span class="num">09</span> Error Handling</div>
+      <div class="card__bd">
+<pre><span class="kw">try</span> {
+    <span class="ty">File</span> f = <span class="fn">open</span>(<span class="str">"data.txt"</span>)
+} <span class="kw">catch</span> (<span class="ty">IOError</span> e) {
+    <span class="fn">log</span>(e.message)
+} <span class="kw">finally</span> {
+    <span class="fn">cleanup</span>()
+}
+
+<span class="kw">defer</span> <span class="fn">close</span>(resource)  <span class="cm">// scope cleanup</span>
+<span class="kw">throw</span>(<span class="str">"something failed"</span>)</pre>
+        <p class="note"><code>try/catch/finally</code> only — there is no <code>?</code> operator.</p>
+      </div>
+    </section>
+
+    <!-- 10 Casting -->
+    <section class="card card--teal">
+      <div class="card__hd"><span class="num">10</span> Casting &amp; Conversions</div>
+      <div class="card__bd">
+<pre><span class="ty">float64</span> f = <span class="kw">cast</span>[<span class="ty">float64</span>](x)   <span class="cm">// safe</span>
+<span class="ty">int32</span> n = f.<span class="fn">to_int32</span>()       <span class="cm">// method</span>
+<span class="kw">const_cast</span>[<span class="ty">T</span>](v)             <span class="cm">// drop const</span>
+<span class="kw">unsafe_cast</span>[<span class="ty">T</span>](v)            <span class="cm">// reinterpret</span>
+<span class="ty">int64</span> sz = <span class="fn">sizeof</span>(<span class="ty">Point</span>)</pre>
+      </div>
+    </section>
+
+    <!-- 11 Nullable -->
+    <section class="card card--gold">
+      <div class="card__hd"><span class="num">11</span> Nullable Types</div>
+      <div class="card__bd">
+<pre><span class="ty">str</span>? maybe = <span class="kw">null</span>
+<span class="kw">if</span> (maybe != <span class="kw">null</span>) {
+    <span class="fn">println</span>(maybe.<span class="fn">len</span>())  <span class="cm">// narrowed</span>
+}
+<span class="ty">int32</span> len = maybe?.<span class="fn">len</span>() ?? <span class="num">0</span></pre>
+        <p class="note">The compiler narrows <code>T?</code> to <code>T</code> after a <code>!= null</code> check.</p>
+      </div>
+    </section>
+
+    <!-- 12 Concurrency -->
+    <section class="card card--rust">
+      <div class="card__hd"><span class="num">12</span> Concurrency</div>
+      <div class="card__bd">
+        <div class="chips">
+          <span class="chip">spawn</span><span class="chip">chan</span><span class="chip">atomic</span><span class="chip">mutex</span><span class="chip">rwlock</span><span class="chip">spinlock</span><span class="chip">semaphore</span>
+        </div>
+<pre><span class="kw">spawn</span> <span class="fn">worker</span>()   <span class="cm">// green thread (Flight)</span>
+<span class="kw">chan</span>[<span class="ty">int32</span>] ch = <span class="fn">chan</span>()
+<span class="kw">atomic</span>[<span class="ty">int64</span>] c = <span class="fn">atomic</span>(<span class="num">0</span>)
+c.<span class="fn">fetch_add</span>(<span class="num">1</span>)
+
+<span class="kw">mutex</span>[<span class="ty">int32</span>] m = <span class="fn">mutex</span>(<span class="num">0</span>)
+<span class="kw">with</span> (m.<span class="fn">guard</span>()) {    <span class="cm">// scoped lock</span>
+    <span class="cm">// ... auto-unlocks</span>
+}</pre>
+      </div>
+    </section>
+
+    <!-- 13 Memory / NOVA -->
+    <section class="card card--slate">
+      <div class="card__hd"><span class="num">13</span> Memory — NOVA</div>
+      <div class="card__bd">
+        <p class="note" style="margin-top:0">Automatic, leak-free memory, <b>no GC</b>. Every value has an owner; heap buffers free at scope exit.</p>
+        <div class="chips" style="margin-top:6px">
+          <span class="chip">Declared</span><span class="chip">Owned</span><span class="chip">Moved</span><span class="chip">Borrowed</span><span class="chip">Locked</span><span class="chip">Freed</span>
+        </div>
+<pre><span class="kw">unsafe</span> {
+    <span class="ty">ptr</span>[<span class="ty">int32</span>] p = &amp;x
+    <span class="ty">int32</span> val = *p
+}</pre>
+        <p class="note">The six states above appear in diagnostics.</p>
+      </div>
+    </section>
+
+    <!-- 14 Annotations -->
+    <section class="card card--gold">
+      <div class="card__hd"><span class="num">14</span> Annotations</div>
+      <div class="card__bd">
+        <table>
+          <tbody>
+            <tr><td class="mono">@no_discard</td><td>Caller must use the return value</td></tr>
+            <tr><td class="mono">@no_return</td><td>Function never returns</td></tr>
+            <tr><td class="mono">@packed @aligned(N)</td><td>Struct layout control</td></tr>
+            <tr><td class="mono">@inline @cold @hot</td><td>Optimization hints</td></tr>
+            <tr><td class="mono">@section("n")</td><td>Place symbol in a linker section</td></tr>
+            <tr><td class="mono">@deprecated("m")</td><td>Emit a deprecation warning</td></tr>
+            <tr><td class="mono">@sensitive</td><td>Encrypt value in the binary</td></tr>
+            <tr><td class="mono">@tainted @sink</td><td>Taint tracking (+ <code class="k">@sanitizer</code>)</td></tr>
+            <tr><td class="mono">@test</td><td>Mark a test function</td></tr>
+            <tr><td class="mono">@repr("C")</td><td>C-compatible layout</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 15 Imports -->
+    <section class="card card--teal">
+      <div class="card__hd"><span class="num">15</span> Imports</div>
+      <div class="card__bd">
+<pre><span class="kw">import</span> std.io.<span class="ty">File</span>
+<span class="kw">import</span> std.collections.{<span class="ty">HashMap</span>, <span class="ty">HashSet</span>}</pre>
+        <p class="note">Use <code>import</code>, not <code>use</code>.</p>
+      </div>
+    </section>
+
+  </div><!-- /cols -->
+
+  <div class="foot">
+    <span>Kestrel <b>v1.0.0</b> — full language + CLI quick reference.</span>
+    <span>Deeper docs: <b>kestrel-build.github.io</b> · Language Guide &amp; Type System.</span>
+  </div>
+
+</div>
+</body>
+</html>
