@@ -2,21 +2,28 @@
 
 ## Installation
 
-### Download from GitHub Releases
+### One-line installer (recommended)
 
-Pre-built binaries for Linux and macOS are available on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases) page.
-
-Download the archive for your platform, extract it, and place the `kestrel` binary somewhere on your PATH:
+This downloads and installs the **latest** release for your platform:
 
 ```bash
-tar xzf kestrel-v1.0.0-alpha.1-linux-x86_64.tar.gz
-mv kestrel ~/.local/bin/
+curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel-public/main/install.sh | sh
 ```
 
-Make sure `~/.local/bin` is in your PATH:
+To install a specific version instead of the latest, set `KESTREL_VERSION`:
 
 ```bash
-export PATH="$HOME/.local/bin:$PATH"
+KESTREL_VERSION=v1.0.0-alpha.6 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel-public/main/install.sh | sh
+```
+
+### Manual download
+
+Pre-built binaries for Linux and macOS are on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases/latest) page. Download the archive for your platform from the latest release, extract it, and put `kestrel` on your PATH:
+
+```bash
+tar xzf kestrel-<version>-linux-x86_64.tar.gz   # e.g. kestrel-v1.0.0-alpha.6-linux-x86_64
+mv kestrel ~/.local/bin/
+export PATH="$HOME/.local/bin:$PATH"            # if not already on PATH
 ```
 
 ### From source
