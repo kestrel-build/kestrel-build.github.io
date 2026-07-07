@@ -3,6 +3,12 @@ name: Deploy docs
 on:
   push:
     branches: [main]
+  # Rebuild nightly so the site refreshes even without a commit (picks up the
+  # latest release, blog dates, and any build-time content). 06:00 UTC.
+  schedule:
+    - cron: "0 6 * * *"
+  # Allow a manual redeploy from the Actions tab.
+  workflow_dispatch:
 
 permissions:
   contents: read
