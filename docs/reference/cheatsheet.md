@@ -138,14 +138,17 @@ required. Newline terminates a statement (no semicolons).
 // List[T]
 List[int32] xs = list_new()
 xs.push(10)
+int32 v = xs.get(0)         // bounds-checked
 int32 first = xs.first()
 int32 last = xs.last()
+int32 top = xs.pop()        // remove + return last
 xs.sort()                   // ascending; numeric + str elements
 xs.reverse()
 bool has = xs.contains(10)
+int64 at = xs.index_of(10)  // first match, or -1
 bool empty = xs.is_empty()
 int64 n = xs.len()
-int32 v = xs.get(0)         // bounds-checked
+xs.clear()                  // empty it, keep capacity
 
 // HashMap[str, V]
 HashMap[str, int32] ages = map_new()
