@@ -59,6 +59,7 @@ nav:
     - Taint Tracking: security/taint-tracking.md
     - Effect System: security/effect-system.md
   - Reference:
+    - Cheatsheet: reference/cheatsheet.md
     - Type System: reference/type-system.md
     - Standard Library: reference/stdlib.md
   - Blog:
