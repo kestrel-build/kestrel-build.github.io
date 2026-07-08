@@ -589,7 +589,7 @@ c.<span class="fn">fetch_add</span>(<span class="num">1</span>)
       <div class="card__bd">
         <table>
           <tbody>
-            <tr><td class="mono">@no_discard</td><td>Caller must use the return value</td></tr>
+            <tr><td class="mono">@ignore_discard</td><td>Callers may drop the return value (results are must-use by default)</td></tr>
             <tr><td class="mono">@no_return</td><td>Function never returns</td></tr>
             <tr><td class="mono">@packed @aligned(N)</td><td>Struct layout control</td></tr>
             <tr><td class="mono">@inline @cold @hot</td><td>Optimization hints</td></tr>

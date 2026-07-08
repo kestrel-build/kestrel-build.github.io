@@ -92,6 +92,10 @@ func identity[T](T val) -> T {       // generics use [T], not <T>
 
 String interpolation: `"total = {a + b}"`. Booleans interpolate as `true`/`false`.
 
+**Return values are must-use by default** — a bare `compute()` that drops a
+non-void result is an error. Use it, assign it, `discard compute()` to drop it
+deliberately, or mark the function `@ignore_discard`.
+
 ---
 
 ## Operators
@@ -275,7 +279,7 @@ unsafe {
 
 | Annotation | Purpose |
 |------------|---------|
-| `@no_discard` | Caller must use the return value |
+| `@ignore_discard` | Callers may drop this function's return value |
 | `@no_return` | Function never returns |
 | `@packed` / `@aligned(N)` | Struct layout control |
 | `@inline` / `@cold` / `@hot` | Optimization hints |
