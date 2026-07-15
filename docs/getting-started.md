@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.
 To install a specific version instead of the latest, set `KESTREL_VERSION`:
 
 ```bash
-KESTREL_VERSION=v1.0.0-alpha.6 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
+KESTREL_VERSION=v1.0.0-alpha.7 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
 ```
 
 ### Manual download
@@ -21,7 +21,7 @@ KESTREL_VERSION=v1.0.0-alpha.6 curl -fsSL https://raw.githubusercontent.com/kest
 Pre-built binaries for Linux and macOS are on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases/latest) page. Download the archive for your platform from the latest release, extract it, and put `kestrel` on your PATH:
 
 ```bash
-tar xzf kestrel-<version>-linux-x86_64.tar.gz   # e.g. kestrel-v1.0.0-alpha.6-linux-x86_64
+tar xzf kestrel-<version>-linux-x86_64.tar.gz   # e.g. kestrel-v1.0.0-alpha.7-linux-x86_64
 mv kestrel ~/.local/bin/
 export PATH="$HOME/.local/bin:$PATH"            # if not already on PATH
 ```
@@ -48,7 +48,7 @@ Create a file called `hello.kst`:
 
 ```kestrel
 func main() -> int32 {
-    printf("Hello, world!\n")
+    println("Hello, world!")
     return 0
 }
 ```
