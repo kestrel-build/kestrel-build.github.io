@@ -6,20 +6,21 @@ categories:
   - Release
 ---
 
-# Kestrel v1.0.0-beta.2: The Trait System, Finished — and Signed Releases
+# Kestrel v1.0.0-beta.2: The Trait System, Finished — and Release Signing Lands
 
 Beta.1 landed traits. Beta.2 *finishes* them — impls on primitives, generic
-impls, dynamic dispatch, and associated types — and turns on **GPG-signed
-releases** so you can verify what you download.
+impls, dynamic dispatch, and associated types — and lands **GPG-signed
+releases**, starting with the next build, so you can verify what you download.
 
 <!-- more -->
 
 ## Signed releases
 
-The build pipeline now GPG-signs the checksum file for every tagged release.
-Each release ships a `SHA256SUMS.asc` signature and the public key
-(`kestrel-signing-key.asc`) right alongside the binaries, so you can verify a
-download end to end without hunting anything down:
+Release signing is landing. **Starting with the next release**, the build
+pipeline GPG-signs the checksum file for every tag, shipping a `SHA256SUMS.asc`
+signature and the public key (`kestrel-signing-key.asc`) right alongside the
+binaries. Once a release carries a `SHA256SUMS.asc`, you can verify a download
+end to end without hunting anything down:
 
 ```bash
 # Download the binary, SHA256SUMS, SHA256SUMS.asc, and kestrel-signing-key.asc
@@ -105,4 +106,4 @@ The full write-up is in [`docs/TRAITS.md`](https://github.com/kestrel-build/kest
 
 As always: memory is managed for you (every trait object and boxed value is
 freed automatically, valgrind-clean), the compiler still compiles itself, and
-the whole thing is now signed.
+release signing is landing.
