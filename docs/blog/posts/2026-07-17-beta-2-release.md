@@ -16,15 +16,17 @@ releases** so you can verify what you download.
 
 ## Signed releases
 
-Release signing is being rolled out: the build pipeline GPG-signs the checksum
-file, publishing a `SHA256SUMS.asc` next to the binaries, and the public key is
-in the repo as `kestrel-signing-key.asc`. Once a release carries that `.asc`,
-you can verify a download end to end:
+The build pipeline now GPG-signs the checksum file for every tagged release.
+Each release ships a `SHA256SUMS.asc` signature and the public key
+(`kestrel-signing-key.asc`) right alongside the binaries, so you can verify a
+download end to end without hunting anything down:
 
 ```bash
+# Download the binary, SHA256SUMS, SHA256SUMS.asc, and kestrel-signing-key.asc
+# from the release, then:
 gpg --import kestrel-signing-key.asc
 gpg --verify SHA256SUMS.asc SHA256SUMS   # authentic checksums
-sha256sum -c SHA256SUMS                  # binaries match
+sha256sum -c SHA256SUMS                  # binaries match the checksums
 ```
 
 A `Good signature from "KestrelBuild"` means the bytes you have are the bytes we
