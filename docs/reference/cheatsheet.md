@@ -102,12 +102,13 @@ deliberately, or mark the function `@ignore_discard`.
 
 | Group | Operators |
 |-------|-----------|
-| Arithmetic | `+` `-` `*` `/` `%` |
+| Arithmetic | `+` `-` `*` `/` `%` (overflow **traps**, never wraps) |
 | Comparison | `==` `!=` `<` `<=` `>` `>=` |
 | Logical | `&&` `\|\|` `!` (no `and`/`or`/`not`) |
 | Bitwise | `&` `\|` `^` `~` `<<` `>>` |
 | Assignment | `=` `+=` `-=` `*=` `/=` `%=` `&=` `\|=` `^=` `<<=` `>>=` |
 | Nullable | `?.` (safe call) · `??` (default) |
+| Wrapping | `wrapping_add` · `wrapping_sub` · `wrapping_mul` (opt into modular arithmetic) |
 
 ---
 

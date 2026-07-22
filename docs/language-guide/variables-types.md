@@ -41,6 +41,45 @@ int32 x = 42
 int64 y = cast[int64](x)
 ```
 
+## Integer overflow is checked
+
+Arithmetic that overflows its type is a bug — and a frequent source of security
+holes, where a wrapped size calculation leads to an undersized buffer. Kestrel
+does not let it happen silently. Every `+`, `-`, and `*` on an integer (signed or
+unsigned) is checked; if the result does not fit the type, the program stops with
+a diagnostic instead of wrapping to a wrong value:
+
+```kestrel
+int32 x = 2147483647    // int32 max
+int32 y = x + 1         // aborts: "integer overflow: add of two int32 values"
+```
+
+This applies to compound assignments (`+=`, `-=`, `*=`) too. In-range arithmetic
+is unaffected, and the check is cheap — it compiles to an add plus a
+jump-on-overflow, not a software division.
+
+### Opting out: `wrapping_*`
+
+Some algorithms *want* modular arithmetic — hashes, checksums, PRNGs, ring-buffer
+indices. For those, ask for wrapping explicitly with `wrapping_add`,
+`wrapping_sub`, and `wrapping_mul`:
+
+```kestrel
+// FNV-1a hash — defined in terms of wrapping arithmetic, so it says so.
+func fnv1a(str s) -> uint32 {
+    uint32 hash = 2166136261
+    int64 i = 0
+    while (i < s.len()) {
+        hash = wrapping_mul(hash, 16777619)
+        hash = wrapping_add(hash, cast[uint32](s.byte_at(i)))
+        i += 1
+    }
+    return hash
+}
+```
+
+The default is safe; wrapping is opt-in and visible at the call site.
+
 ## Arrays
 
 ```kestrel
