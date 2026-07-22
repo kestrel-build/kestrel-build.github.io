@@ -30,17 +30,52 @@ with (File f = open("log.txt")) {
 
 ## Defer
 
-Run cleanup code at scope exit:
+`defer` schedules an expression to run when its enclosing block exits — by any
+path: falling off the end, an early `return`, a `break`/`continue`, or a `throw`.
+Deferred expressions run **last-in-first-out**, and **before** the block's locals
+are freed, so cleanup can still use them.
 
 ```kestrel
 func process() -> void {
-    ptr[void] buf = malloc(1024)
-    defer free(buf)
+    File f = open("data.txt")
+    defer f.close()          // runs no matter how process() exits
 
-    // ... use buf ...
-    // free(buf) runs here automatically
+    str line = f.read_line()
+    // ... f.close() runs here automatically ...
 }
 ```
+
+`defer` is **block-scoped**: a `defer` inside a loop body fires at the end of
+each iteration, not all at once when the function returns.
+
+```kestrel
+for (i in 0..2) {
+    defer println("close {i}")
+    println("open {i}")
+}
+// open 0 / close 0 / open 1 / close 1 / open 2 / close 2
+```
+
+## Contracts
+
+`@requires` and `@ensures` attach a precondition and a postcondition to a
+function. Both are boolean expressions checked at run time; `@ensures` also sees
+the returned value as `result`. A violated contract reports which one failed and
+stops the program — a broken assumption halts at the boundary that stated it,
+instead of corrupting whatever comes next.
+
+```kestrel
+@requires(n >= 0)
+@ensures(result >= 1)
+func factorial(int32 n) -> int32 {
+    if (n <= 1) {
+        return 1
+    }
+    return n * factorial(n - 1)
+}
+```
+
+Several `@requires` may be stacked; each is checked on entry.
 
 ## Nested error handling
 

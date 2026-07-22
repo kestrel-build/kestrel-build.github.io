@@ -61,6 +61,7 @@ nav:
   - Reference:
     - Cheatsheet: reference/cheatsheet.md
     - Type System: reference/type-system.md
+    - Tooling: reference/tooling.md
     - Standard Library: reference/stdlib.md
   - Blog:
     - blog/index.md
