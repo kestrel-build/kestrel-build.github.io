@@ -89,6 +89,42 @@ int64 first = numbers[0]
 
 Array access is bounds-checked at compile time where possible.
 
+## Nullable types
+
+Any type `T` has a nullable form `T?` that holds either a value or `null`. The
+compiler will not let you use a `T?` as a `T` until you have ruled out null.
+
+```kestrel
+int32? maybe = null
+str? name = "Kestrel"
+```
+
+Compare against `null` with `==` / `!=`. After a check, the value is **narrowed**
+to the non-nullable type for the rest of that scope:
+
+```kestrel
+func classify(int32? n) -> str {
+    if (n == null) {
+        return "none"
+    }
+    // n is narrowed to plain int32 here
+    return "value: {n}"
+}
+```
+
+Three operators work on nullables:
+
+```kestrel
+int32? missing = null
+int32 x = missing ?? 0          // ?? — fallback when the left side is null
+int32? forced = 7
+int32 y = forced!!              // !! — assert non-null (aborts at runtime if null)
+int64 len = name?.len() ?? 0    // ?. — safe access, yields a nullable
+```
+
+There is no null-pointer dereference: raw pointers are nullable with the same
+`ptr[T]?` syntax and must be checked before use inside `unsafe`.
+
 ## Type aliases
 
 ```kestrel

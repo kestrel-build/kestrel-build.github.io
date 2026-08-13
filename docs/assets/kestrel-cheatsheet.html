@@ -320,6 +320,10 @@ pre .an{color:var(--rust-ink)}   /* annotations */
             <tr><td class="mono">kestrel build &lt;f&gt;</td><td>Compile <code class="k">.kst</code> to a native binary</td></tr>
             <tr><td class="mono">kestrel run &lt;f&gt;</td><td>Compile and run in one step</td></tr>
             <tr><td class="mono">kestrel check &lt;f&gt;</td><td>Type-check only, no binary</td></tr>
+            <tr><td class="mono">kestrel fmt &lt;f&gt;</td><td>Format source (<code class="k">--check</code> to verify)</td></tr>
+            <tr><td class="mono">kestrel lint &lt;f&gt;</td><td>Report style / correctness lints</td></tr>
+            <tr><td class="mono">kestrel doc &lt;f&gt;</td><td>Markdown API reference (<code class="k">-o</code> to file)</td></tr>
+            <tr><td class="mono">kestrel test &lt;f&gt;</td><td>Run the file's <code class="k">@test</code> functions</td></tr>
             <tr><td class="mono">kestrel new &lt;n&gt;</td><td>Scaffold a new project</td></tr>
             <tr><td class="mono">kestrel emit-ir &lt;f&gt;</td><td>Print Kestrel IR (debug)</td></tr>
             <tr><td class="mono">kestrel emit-llvm &lt;f&gt;</td><td>Emit LLVM IR (<code class="k">.ll</code>)</td></tr>
@@ -412,10 +416,11 @@ pre .an{color:var(--rust-ink)}   /* annotations */
             <tr><td>Bitwise</td><td class="mono">&amp; | ^ ~ &lt;&lt; &gt;&gt;</td></tr>
             <tr><td>Assign</td><td class="mono">= += -= *= /= %=</td></tr>
             <tr><td></td><td class="mono">&amp;= |= ^= &lt;&lt;= &gt;&gt;=</td></tr>
-            <tr><td>Nullable</td><td class="mono">?. &nbsp; ??</td></tr>
+            <tr><td>Nullable</td><td class="mono">?. &nbsp; ?? &nbsp; !!</td></tr>
           </tbody>
         </table>
-        <p class="note">Logical is <code>&amp;&amp;</code> <code>||</code> <code>!</code> only — no <code>and</code>/<code>or</code>/<code>not</code>. <code>?.</code> safe call · <code>??</code> default.</p>
+        <p class="note">Logical is <code>&amp;&amp;</code> <code>||</code> <code>!</code> only — no <code>and</code>/<code>or</code>/<code>not</code>. <code>?.</code> safe call · <code>??</code> default · <code>!!</code> assert non-null.</p>
+        <p class="note"><code>+ - *</code> are <b>overflow-checked</b> (abort on overflow) — opt into modular math with <code>wrapping_add/sub/mul</code>.</p>
       </div>
     </section>
 

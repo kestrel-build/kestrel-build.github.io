@@ -29,7 +29,7 @@ Functions declare their side effects. A function marked `@pure` cannot do I/O. A
 
 ### 5. Contracts and refinements
 
-`@requires` and `@ensures` let you attach preconditions and postconditions to functions, checked at compile time where possible.
+`@requires` and `@ensures` let you attach preconditions and postconditions to functions, checked at run time; inside `@ensures`, `result` names the returned value. A violated contract reports which one failed and stops the program.
 
 ### 6. Capability permissions
 

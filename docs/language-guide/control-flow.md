@@ -60,20 +60,39 @@ repeat (5) {
 
 ## Match
 
+A `case` uses the colon form: the statements after the `:` run until the next
+`case` or the closing `}`. Patterns can be literals, inclusive (`..`) or
+exclusive (`..<`) ranges, or `_` for the catch-all.
+
 ```kestrel
 match (status) {
-    case 200 {
+    case 200: printf("OK\n")
+    case 404: printf("Not found\n")
+    case 500..599: printf("Server error\n")
+    case _: printf("Unknown: {status}\n")
+}
+```
+
+A case can run several statements — they all belong to the case until the next
+`case`:
+
+```kestrel
+match (status) {
+    case 200:
+        log("serving")
         printf("OK\n")
-    }
-    case 404 {
-        printf("Not found\n")
-    }
-    case 500..599 {
-        printf("Server error\n")
-    }
-    case _ {
+    case _:
         printf("Unknown: {status}\n")
-    }
+}
+```
+
+Enum variants match by their qualified name, and payload fields bind as names:
+
+```kestrel
+match (shape) {
+    case Shape.Circle(r): return 3.14159 * r * r
+    case Shape.Rect(w, h): return w * h
+    case Shape.Empty: return 0.0
 }
 ```
 

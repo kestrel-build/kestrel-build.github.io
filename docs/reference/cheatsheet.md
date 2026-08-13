@@ -17,6 +17,10 @@ A color-coded, multi-column layout that prints cleanly to two Letter/A4 pages.
 | `kestrel build <file>` | Compile a `.kst` file to a native binary |
 | `kestrel run <file>` | Compile and run in one step |
 | `kestrel check <file>` | Type-check only, no binary |
+| `kestrel fmt [--check] <files>` | Format in place (`--check` reports, exits 1) |
+| `kestrel lint <files>` | Report style/correctness lints |
+| `kestrel doc [-o out.md] <file>` | Generate a Markdown API reference |
+| `kestrel test <file>` | Run the file's `@test` functions |
 | `kestrel new <name>` | Scaffold a new project |
 | `kestrel emit-ir <file>` | Print Kestrel IR (debugging) |
 | `kestrel emit-llvm <file>` | Emit LLVM IR (`.ll`) |
@@ -107,7 +111,7 @@ deliberately, or mark the function `@ignore_discard`.
 | Logical | `&&` `\|\|` `!` (no `and`/`or`/`not`) |
 | Bitwise | `&` `\|` `^` `~` `<<` `>>` |
 | Assignment | `=` `+=` `-=` `*=` `/=` `%=` `&=` `\|=` `^=` `<<=` `>>=` |
-| Nullable | `?.` (safe call) · `??` (default) |
+| Nullable | `?.` (safe access) · `??` (default) · `!!` (assert non-null) |
 | Wrapping | `wrapping_add` · `wrapping_sub` · `wrapping_mul` (opt into modular arithmetic) |
 
 ---
@@ -238,7 +242,8 @@ str? maybe = null
 if (maybe != null) {
     println(maybe.len())            // compiler narrows the type
 }
-int32 len = maybe?.len() ?? 0
+int32 len = maybe?.len() ?? 0       // safe access + default
+str name = maybe!!                  // assert non-null (aborts if null)
 ```
 
 ---
