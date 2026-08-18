@@ -146,6 +146,31 @@ required. Newline terminates a statement (no semicolons).
 
 ---
 
+## Line breaks
+
+```kestrel
+// Newline ends a statement — one per line, no semicolons.
+int32 x = 42
+
+// Break freely between commas in a bracketed list (trailing comma ok):
+int32 t = sum(
+    a,
+    b,
+)
+int32[3] xs = [1, 2, 3]
+
+// Anywhere else (after an operator, a method chain, decl params),
+// continue the line with a trailing backslash:
+int32 y = 1 + \
+          2
+```
+
+Automatic continuation applies only between commas inside `()` / `[]` / import
+`{}`. Elsewhere, end the line with `\`. See
+[Statements & Line Breaks](../language-guide/syntax.md).
+
+---
+
 ## Collections
 
 ```kestrel

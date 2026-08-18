@@ -47,6 +47,7 @@ nav:
     - Hello World: hello-world.md
   - Language Guide:
     - Overview: language-guide/overview.md
+    - Statements & Line Breaks: language-guide/syntax.md
     - Variables & Types: language-guide/variables-types.md
     - Functions: language-guide/functions.md
     - Control Flow: language-guide/control-flow.md
