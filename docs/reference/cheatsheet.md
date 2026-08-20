@@ -66,7 +66,7 @@ int32 x = 42
 float64 pi = 3.14159
 str name = "Kestrel"
 bool active = true
-int32 flags = 0
+int32 flags = zeroed()      // zero value (numeric/bool), type from context
 auto n = 42                 // inferred type
 ```
 
