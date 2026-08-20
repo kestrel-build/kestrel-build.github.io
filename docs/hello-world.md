@@ -4,7 +4,7 @@ The simplest Kestrel program:
 
 ```kestrel
 func main() -> int32 {
-    printf("Hello, world!\n")
+    println("Hello, world!")
     return 0
 }
 ```
@@ -18,7 +18,8 @@ kestrel run hello.kst
 ## What each line means
 
 - `func main() -> int32 {` — the entry point, returns an integer exit code
-- `printf(...)` — calls the C standard library printf; available without an import
+- `println(...)` — prints a line to standard output (a built-in; no import needed).
+  It appends the newline for you, and `{...}` interpolates values into the string
 - `return 0` — exit code 0 means success
 - Curly braces define blocks
 
@@ -27,7 +28,7 @@ kestrel run hello.kst
 ```kestrel
 func main() -> int32 {
     str name = "Kestrel"
-    printf("Hello, {name}!\n")
+    println("Hello, {name}!")
     return 0
 }
 ```

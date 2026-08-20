@@ -51,7 +51,7 @@ Functions declare what they do: I/O, network, pure. A math library cannot sneak 
 ```kestrel
 func main() -> int32 {
     str name = "world"
-    printf("Hello, %s!\n", name)
+    println("Hello, {name}!")
     return 0
 }
 ```
@@ -59,8 +59,8 @@ func main() -> int32 {
 ## A taste of the safety model
 
 ```kestrel
-// The compiler tracks that 'input' came from user data
-@tainted str input = read_line()
+// The compiler tracks that 'input' came from user data (e.g. a command-line arg)
+@tainted str input = arg(1)
 
 // This would be a compile error — tainted data cannot reach a SQL sink
 // db.query("SELECT * FROM users WHERE name = '{input}'")
