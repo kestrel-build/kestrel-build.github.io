@@ -66,7 +66,7 @@ int32 x = 42
 float64 pi = 3.14159
 str name = "Kestrel"
 bool active = true
-int32 flags = zeroed()      // zero-initialize any type
+int32 flags = 0
 auto n = 42                 // inferred type
 ```
 
@@ -152,21 +152,17 @@ required. Newline terminates a statement (no semicolons).
 // Newline ends a statement — one per line, no semicolons.
 int32 x = 42
 
-// Break freely between commas in a bracketed list (trailing comma ok):
-int32 t = sum(
-    a,
-    b,
-)
-int32[3] xs = [1, 2, 3]
-
-// Anywhere else (after an operator, a method chain, decl params),
-// continue the line with a trailing backslash:
-int32 y = 1 + \
+// A line ending on an operator (that needs a right side) continues — Go's rule:
+int32 y = 1 +
           2
+
+// ...and newlines inside ( ) / [ ] are ignored (no trailing comma):
+int32 t = add(a,
+              b)
 ```
 
-Automatic continuation applies only between commas inside `()` / `[]` / import
-`{}`. Elsewhere, end the line with `\`. See
+Continuation happens after a dangling operator (`+`, `&&`, `=`, a trailing `.`,
+`->`, …) or inside brackets. There is no `\` continuation. See
 [Statements & Line Breaks](../language-guide/syntax.md).
 
 ---

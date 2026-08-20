@@ -7,9 +7,9 @@ try {
     str content = read_file("data.txt")
     process(content)
 } catch (IOError e) {
-    printf("File error: {e.message}\n")
+    println("File error: {e.message}")
 } catch (Error e) {
-    printf("Unexpected error: {e.message}\n")
+    println("Unexpected error: {e.message}")
 } finally {
     cleanup()
 }
@@ -86,10 +86,10 @@ func load_and_process(str path) -> void {
         try {
             parse(data)
         } catch (ParseError e) {
-            printf("Bad format: {e.message}\n")
+            println("Bad format: {e.message}")
         }
     } catch (IOError e) {
-        printf("Cannot read {path}: {e.message}\n")
+        println("Cannot read {path}: {e.message}")
     }
 }
 ```

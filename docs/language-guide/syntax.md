@@ -15,111 +15,68 @@ convention.
 
 ## Breaking a long line
 
-Because a newline ends a statement, a statement that should continue onto the
-next line needs one of the two mechanisms below.
+A newline ends a statement *only* when the line so far could be a complete
+statement. In the two situations below the newline is treated as a space and the
+statement continues — the same rule Go uses. There is no line-continuation
+character (a `\` is not special here).
 
-### 1. Inside a bracketed, comma-separated list (automatic)
+### 1. After an operator that needs a right-hand side
 
-Newlines are ignored between the brackets of a **comma-separated list**, so you
-can spread these across lines — and a trailing comma is allowed:
+A line that ends on an operator which cannot finish a statement — a binary,
+comparison, logical, bitwise, or assignment operator, `??`, a trailing `.`, or
+`->` — continues onto the next line:
 
 ```kestrel
-// Function call arguments
-int32 total = sum(
-    first_value,
-    second_value,
-    third_value,
-)
+int32 total = first_value +
+              second_value +
+              third_value
 
-// List / array literals
-int32[3] triple = [
-    10,
-    20,
-    30,
-]
-
-// Import selector braces
-import std.collections.{
-    HashMap,
-    HashSet,
+if (ready &&
+    count > 0) {
+    // ...
 }
 ```
 
-Nested calls may span lines the same way:
+Method-call chains break the same way, on a **trailing** `.`:
+
+```kestrel
+str result = name.trim().
+    to_upper()
+```
+
+(The `.` must end the upper line. A line that ends on a complete value — e.g.
+`name.trim()` — terminates, so a `.method()` cannot *start* the next line.)
+
+### 2. Inside brackets `(` … `)` and `[` … `]`
+
+Newlines between a matching `(`/`)` or `[`/`]` are ignored, so call arguments,
+function parameters, array/list literals, and parenthesized expressions may span
+lines:
 
 ```kestrel
 int32 s = add(
     add(1, 2),
-    add(3, 4),
-)
+    add(3, 4))
+
+func distance(float64 x,
+              float64 y) -> float64 {
+    return x * x + y * y
+}
+
+int32[3] triple = [10,
+                   20,
+                   30]
 ```
 
-### 2. Backslash continuation (explicit, works anywhere)
+!!! note "No trailing comma"
 
-To break a line *anywhere else*, end it with a backslash `\`. The backslash and
-the following newline are removed, joining the two lines into one logical line:
-
-```kestrel
-int32 x = 1 + \
-          2 + \
-          3
-
-str r = "hello".to_upper(). \
-        to_lower()
-```
-
-## Where automatic continuation does **not** apply
-
-The automatic rule only covers commas inside brackets. In the places below a
-newline still ends the statement, so you must keep the code on one line or use a
-`\`.
-
-!!! warning "These break across lines only with a trailing `\`"
-
-    **After an operator** — a line ending in a binary or logical operator is an
-    error, *even inside parentheses*:
-
-    ```kestrel
-    // error: the newline after `&&` ends the expression
-    if (a > 0 &&
-        a < 10) { }
-
-    // ok — trailing backslash, or keep it on one line
-    if (a > 0 && \
-        a < 10) { }
-    ```
-
-    **Method-call chains** — a `.method()` cannot start (or the previous line
-    end with a `.`) on its own line without a `\`:
-
-    ```kestrel
-    // error
-    str r = name.trim()
-                .to_upper()
-
-    // ok
-    str r = name.trim(). \
-                to_upper()
-    ```
-
-    **Function declaration parameter lists** — keep the parameters of a `func`
-    declaration on one line:
-
-    ```kestrel
-    // error: declaration parameters do not span lines
-    func add(
-        int32 a,
-        int32 b) -> int32 { return a + b }
-
-    // ok
-    func add(int32 a, int32 b) -> int32 { return a + b }
-    ```
+    Close the list right after the last element (`3)` above, not `3,)`). A
+    trailing comma before the closing bracket is a syntax error.
 
 ## String interpolation
 
 Inside an interpolated string, `"{ ... }"` holds an expression that is evaluated
-and formatted in place. The whole string literal — braces included — stays on a
-single source line:
+and formatted in place. The whole string literal stays on a single source line:
 
 ```kestrel
 str name = "Kestrel"
@@ -131,6 +88,6 @@ println("Hello, {name}! 1 + 1 = {1 + 1}")
 | You want to… | Do this |
 |---|---|
 | End a statement | Start a new line (no `;`) |
-| Break a call's arguments / a list literal / import braces | Break after any comma; a trailing comma is fine |
-| Break after an operator, split a method chain, or continue anything else | End the line with `\` |
+| Continue a long expression | End the line on an operator (`+`, `&&`, `=`, a trailing `.`, …) — it carries to the next line |
+| Spread call args / parameters / a list literal | Break after a comma inside `(…)` or `[…]` — no trailing comma |
 | Group code visually | Use blank lines (ignored) |

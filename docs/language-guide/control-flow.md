@@ -6,11 +6,11 @@ Parentheses around the condition are required:
 
 ```kestrel
 if (x > 0) {
-    printf("positive\n")
+    println("positive")
 } else if (x < 0) {
-    printf("negative\n")
+    println("negative")
 } else {
-    printf("zero\n")
+    println("zero")
 }
 ```
 
@@ -25,12 +25,12 @@ int32 abs_x = if (x >= 0) x else -x
 ```kestrel
 // inclusive range (0 through 9)
 for (i in 0..9) {
-    printf("{i}\n")
+    println("{i}")
 }
 
 // exclusive range (0 through 9, not 10)
 for (i in 0..<10) {
-    printf("{i}\n")
+    println("{i}")
 }
 ```
 
@@ -54,7 +54,7 @@ do {
 
 ```kestrel
 repeat (5) {
-    printf("hello\n")
+    println("hello")
 }
 ```
 
@@ -66,10 +66,10 @@ exclusive (`..<`) ranges, or `_` for the catch-all.
 
 ```kestrel
 match (status) {
-    case 200: printf("OK\n")
-    case 404: printf("Not found\n")
-    case 500..599: printf("Server error\n")
-    case _: printf("Unknown: {status}\n")
+    case 200: println("OK")
+    case 404: println("Not found")
+    case 500..599: println("Server error")
+    case _: println("Unknown: {status}")
 }
 ```
 
@@ -80,9 +80,9 @@ A case can run several statements — they all belong to the case until the next
 match (status) {
     case 200:
         log("serving")
-        printf("OK\n")
+        println("OK")
     case _:
-        printf("Unknown: {status}\n")
+        println("Unknown: {status}")
 }
 ```
 
@@ -106,6 +106,6 @@ for (i in 0..<100) {
     if (i % 2 == 0) {
         continue
     }
-    printf("{i}\n")
+    println("{i}")
 }
 ```

@@ -11,7 +11,7 @@ struct Point {
 }
 
 Point p = Point { x: 1.0, y: 2.0 }
-printf("{p.x}, {p.y}\n")
+println("{p.x}, {p.y}")
 ```
 
 ## Classes
@@ -96,7 +96,7 @@ trait Printable {
 
 impl Printable for Point {
     func print() -> void {
-        printf("({this.x}, {this.y})\n")
+        println("({this.x}, {this.y})")
     }
 }
 ```
@@ -106,7 +106,7 @@ impl Printable for Point {
 ```kestrel
 impl Printable for Circle {
     func print() -> void {
-        printf("Circle r={this.radius}\n")
+        println("Circle r={this.radius}")
     }
 }
 ```

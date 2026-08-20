@@ -9,7 +9,7 @@ When a value goes out of scope, the compiler inserts a `free` call automatically
 ```kestrel
 func process() -> void {
     str data = read_file("input.txt")   // heap allocation
-    printf("{data}\n")
+    println("{data}")
     // data is freed here automatically — end of scope
 }
 ```
@@ -21,8 +21,8 @@ Each value has one owner. When you assign a value to a new variable, ownership t
 ```kestrel
 str a = "hello"
 str b = a       // 'a' is moved into 'b'
-// printf(a)    // compile error — 'a' was moved
-printf(b)       // ok
+// println(a)    // compile error — 'a' was moved
+println(b)       // ok
 ```
 
 ## Borrow checker
@@ -32,7 +32,7 @@ The borrow checker prevents use-after-move at compile time, with no runtime chec
 ```kestrel
 str message = "hello"
 str other = message      // move
-printf(message)          // error: value was moved
+println(message)          // error: value was moved
 ```
 
 ## Raw pointers
