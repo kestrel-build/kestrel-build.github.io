@@ -52,8 +52,11 @@ kestrel build --target aarch64 -o app-arm64 main.kst   # cross-compile
 ```
 
 **Build profiles** (`kestrel.toml`). `kestrel build` uses the `draft` profile
-(fast, unoptimized, symbols kept); `kestrel build --release` uses `release`
-(optimized, stripped). Set the default and customize in the manifest:
+(fast, unoptimized, symbols kept — best for debugging); `kestrel build --release`
+uses `release` (optimized, stripped, and **anonymized + RE-hardened**: no
+build-id, hidden symbols, dead code removed, and the `kestrel`/`KESTREL_` strings
+dropped so the binary looks like a generic C program). Set the default and
+customize in the manifest:
 
 ```toml
 [build]
