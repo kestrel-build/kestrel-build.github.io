@@ -24,6 +24,10 @@ A color-coded, multi-column layout that prints cleanly to two Letter/A4 pages.
 | `kestrel new <name>` | Scaffold a new project |
 | `kestrel emit-ir <file>` | Print Kestrel IR (debugging) |
 | `kestrel emit-llvm <file>` | Emit LLVM IR (`.ll`) |
+| `kestrel dump-tokens <file>` | Print the lexer token stream (debugging) |
+| `kestrel dump-ast <file>` | Print the parsed AST tree (debugging) |
+| `kestrel explain <code>` | Explain an error code (e.g. `explain E0300`) |
+| `kestrel stat [path]` | Count source lines by language |
 | `kestrel clean` | Remove build artifacts |
 | `kestrel version` | Print version |
 | `kestrel help` | Print help |
@@ -33,7 +37,10 @@ A color-coded, multi-column layout that prints cleanly to two Letter/A4 pages.
 | Option | Effect |
 |--------|--------|
 | `-o <output>` | Output binary path |
-| `--release` | Build with optimizations |
+| `--release` | Build the release profile (alias for `--profile release`) |
+| `--profile <name>` | Build a `kestrel.toml` profile (default: `draft`) |
+| `--target <arch>` | Cross-compile (build only) — see [Cross-compilation](cross-compilation.md) |
+| `--verify-ir` | Run the structural IR verifier before codegen |
 | `--verbose` | Print timing information |
 | `--version` | Print version |
 | `--help` | Print help |
@@ -41,6 +48,24 @@ A color-coded, multi-column layout that prints cleanly to two Letter/A4 pages.
 ```sh
 kestrel run hello.kst
 kestrel build -o myapp --release main.kst
+kestrel build --target aarch64 -o app-arm64 main.kst   # cross-compile
+```
+
+**Build profiles** (`kestrel.toml`). `kestrel build` uses the `draft` profile
+(fast, unoptimized, symbols kept); `kestrel build --release` uses `release`
+(optimized, stripped). Set the default and customize in the manifest:
+
+```toml
+[build]
+profile = "draft"        # profile used when you don't pass --profile
+
+[profile.draft]
+opt-level = "0"
+strip = false
+
+[profile.release]
+opt-level = "2"
+strip = true
 ```
 
 ---

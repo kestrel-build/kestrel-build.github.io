@@ -13,18 +13,22 @@ curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.
 To install a specific version instead of the latest, set `KESTREL_VERSION`:
 
 ```bash
-KESTREL_VERSION=v1.0.0-alpha.7 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
+KESTREL_VERSION=v1.0.0-beta.9 curl -fsSL https://raw.githubusercontent.com/kestrel-build/kestrel/main/install.sh | sh
 ```
 
 ### Manual download
 
-Pre-built binaries for Linux and macOS are on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases/latest) page. Download the archive for your platform from the latest release, extract it, and put `kestrel` on your PATH:
+Pre-built Linux binaries are on the [GitHub Releases](https://github.com/kestrel-build/kestrel/releases/latest) page for six architectures: **x86_64, aarch64, ppc64le, riscv64, armv7, and s390x**. Download the one for your platform, extract it, and put `kestrel` on your PATH:
 
 ```bash
-tar xzf kestrel-<version>-linux-x86_64.tar.gz   # e.g. kestrel-v1.0.0-alpha.7-linux-x86_64
+tar xzf kestrel-<version>-linux-x86_64.tar.gz   # e.g. kestrel-v1.0.0-beta.9-linux-x86_64
 mv kestrel ~/.local/bin/
 export PATH="$HOME/.local/bin:$PATH"            # if not already on PATH
 ```
+
+Already have Kestrel for one CPU? You can also **cross-compile** for any of the
+others in one command — see [Cross-compilation](reference/cross-compilation.md).
+(A macOS build exists in source but is not yet a released target.)
 
 ### From source
 

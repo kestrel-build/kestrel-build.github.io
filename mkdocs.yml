@@ -63,6 +63,7 @@ nav:
     - Cheatsheet: reference/cheatsheet.md
     - Type System: reference/type-system.md
     - Tooling: reference/tooling.md
+    - Cross-compilation: reference/cross-compilation.md
     - Standard Library: reference/stdlib.md
   - Blog:
     - blog/index.md

@@ -74,3 +74,37 @@ kestrel test math_test.kst
 
 A test signals failure by aborting (for example via `fail`); the runner reports
 a non-zero exit when any test fails.
+
+## Debugging the compiler front end
+
+When you need to see *why* a program parses the way it does, two subcommands
+expose the front end directly:
+
+```bash
+kestrel dump-tokens src/main.kst   # the lexer's token stream: line:col KIND "text"
+kestrel dump-ast    src/main.kst   # the parsed AST as an indented tree
+```
+
+`dump-ast` prints each statement and its children (assignments show their target
+name), so you can see exactly which statements landed in which block — the fastest
+way to tell a lexer problem from a parser one.
+
+## Verifying generated code
+
+```bash
+kestrel build --verify-ir src/main.kst   # structural IR checks before codegen
+```
+
+`--verify-ir` runs a well-formedness pass over the compiler's internal IR — every
+block has a terminator, every branch targets a real block, no block is
+unreachable — and fails the build if anything is malformed, before it can become a
+runaway loop or a link error. It is cheap and safe to leave on.
+
+## `kestrel explain`
+
+Print the long-form explanation for an error code:
+
+```bash
+kestrel explain E0300
+```
+
