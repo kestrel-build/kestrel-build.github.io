@@ -102,9 +102,24 @@ runaway loop or a link error. It is cheap and safe to leave on.
 
 ## `kestrel explain`
 
-Print the long-form explanation for an error code:
+Every diagnostic is tagged with an error code — `error[E0300]: ...`. Pass that
+code to `kestrel explain` for a long-form explanation of the whole class of
+problem, with guidance on how to fix it:
 
 ```bash
 kestrel explain E0300
 ```
+
+```text
+E0300 [type error]
+
+The expected type does not match the actual type. Kestrel does not
+perform implicit type conversions. Use `cast[T]()` for safe numeric
+conversions or `.to_X()` methods for other conversions.
+```
+
+Codes are grouped by compiler phase: `E01xx` lexer, `E02xx` parser, `E03xx`
+type, `E04xx` memory/ownership, `E05xx` security. `explain` knows every standard
+code, so you can look one up straight from the `error[...]` tag in a build's
+output.
 
